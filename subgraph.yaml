@@ -1,4 +1,4 @@
-specVersion: 0.0.4
+specVersion: 0.0.5
 schema:
   file: ./schema.graphql
 dataSources:
@@ -8,9 +8,10 @@ dataSources:
     source:
       address: "0xda107a1caf36d198b12c16c7b6a1d1c795978c42"
       abi: IdRegistry
+      startBlock: 7648795
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.5
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - CancelRecovery
@@ -51,9 +52,10 @@ dataSources:
     source:
       address: "0xe3be01d99baa8db9905b33a3ca391238234b79d1"
       abi: NameRegistry
+      startBlock: 7648795
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.5
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - AdminChanged
@@ -76,9 +78,10 @@ dataSources:
     source:
       address: "0xdb647193df79ce69b5d34549aae98d519223f682"
       abi: BundleRegistry
+      startBlock: 7648795
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.5
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - BundleRegistryChangeTrustedCaller
