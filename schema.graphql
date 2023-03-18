@@ -1,34 +1,19 @@
-type ExampleEntity @entity {
+type FID @entity {
   id: ID!
-  count: BigInt!
-  by: Bytes! # address
-  id: BigInt! # uint256
-}
-
-type AdminChanged @entity {
-  id: ID!
-  previousAdmin: Bytes! # address
-  newAdmin: Bytes! # address
-}
-
-type BeaconUpgraded @entity {
-  id: ID!
-  beacon: Bytes! # address
-}
-
-type Upgraded @entity {
-  id: ID!
-  implementation: Bytes! # address
-}
-
-type BundleRegistryChangeTrustedCaller @entity {
-  id: ID!
-  trustedCaller: Bytes! # address
   owner: Bytes! # address
+  recoveryAddr: Bytes! # address
+  recoveries: [Recovery!]! @derivedFrom(field: "fid")
+  createdAtBlock: BigInt!
+  createdAtTimestamp: BigInt!
 }
 
-type BundleRegistryOwnershipTransferred @entity {
+type Recovery @entity {
   id: ID!
-  previousOwner: Bytes! # address
+  fid: FID!
   newOwner: Bytes! # address
+  isActivated: Boolean!
+  createdAtBlock: BigInt!
+  createdAtTimestamp: BigInt!
+  cancelledAtBlock: BigInt
+  cancelledAtTimestamp: BigInt
 }
