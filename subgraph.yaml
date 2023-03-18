@@ -45,3 +45,50 @@ dataSources:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
       file: ./src/id-registry.ts
+  - kind: ethereum
+    name: NameRegistry
+    network: goerli
+    source:
+      address: "0xe3be01d99baa8db9905b33a3ca391238234b79d1"
+      abi: NameRegistry
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - AdminChanged
+        - BeaconUpgraded
+        - Upgraded
+      abis:
+        - name: NameRegistry
+          file: ./abis/NameRegistry.json
+      eventHandlers:
+        - event: AdminChanged(address,address)
+          handler: handleAdminChanged
+        - event: BeaconUpgraded(indexed address)
+          handler: handleBeaconUpgraded
+        - event: Upgraded(indexed address)
+          handler: handleUpgraded
+      file: ./src/name-registry.ts
+  - kind: ethereum
+    name: BundleRegistry
+    network: goerli
+    source:
+      address: "0xdb647193df79ce69b5d34549aae98d519223f682"
+      abi: BundleRegistry
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - BundleRegistryChangeTrustedCaller
+        - BundleRegistryOwnershipTransferred
+      abis:
+        - name: BundleRegistry
+          file: ./abis/BundleRegistry.json
+      eventHandlers:
+        - event: BundleRegistryChangeTrustedCaller(indexed address,indexed address)
+          handler: handleBundleRegistryChangeTrustedCaller
+        - event: BundleRegistryOwnershipTransferred(indexed address,indexed address)
+          handler: handleBundleRegistryOwnershipTransferred
+      file: ./src/bundle-registry.ts

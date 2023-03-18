@@ -4,3 +4,31 @@ type ExampleEntity @entity {
   by: Bytes! # address
   id: BigInt! # uint256
 }
+
+type AdminChanged @entity {
+  id: ID!
+  previousAdmin: Bytes! # address
+  newAdmin: Bytes! # address
+}
+
+type BeaconUpgraded @entity {
+  id: ID!
+  beacon: Bytes! # address
+}
+
+type Upgraded @entity {
+  id: ID!
+  implementation: Bytes! # address
+}
+
+type BundleRegistryChangeTrustedCaller @entity {
+  id: ID!
+  trustedCaller: Bytes! # address
+  owner: Bytes! # address
+}
+
+type BundleRegistryOwnershipTransferred @entity {
+  id: ID!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+}
