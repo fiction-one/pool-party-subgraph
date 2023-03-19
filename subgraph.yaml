@@ -27,22 +27,8 @@ dataSources:
         - name: IdRegistry
           file: ./abis/IdRegistry.json
       eventHandlers:
-        - event: CancelRecovery(indexed address,indexed uint256)
-          handler: handleCancelRecovery
-        - event: ChangeHome(indexed uint256,string)
-          handler: handleChangeHome
-        - event: ChangeRecoveryAddress(indexed uint256,indexed address)
-          handler: handleChangeRecoveryAddress
-        - event: ChangeTrustedCaller(indexed address)
-          handler: handleChangeTrustedCaller
-        - event: DisableTrustedOnly()
-          handler: handleDisableTrustedOnly
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
         - event: Register(indexed address,indexed uint256,address,string)
           handler: handleRegister
-        - event: RequestRecovery(indexed address,indexed address,indexed uint256)
-          handler: handleRequestRecovery
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
       file: ./src/id-registry.ts
