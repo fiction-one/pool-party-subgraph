@@ -2,18 +2,16 @@ type FID @entity {
   id: ID!
   custodyAddr: Bytes! # address
   recoveryAddr: Bytes! # address
-  recoveries: [Recovery!]! @derivedFrom(field: "fid")
   createdAtBlock: BigInt!
   createdAtTimestamp: BigInt!
 }
 
-type Recovery @entity {
+type FName @entity {
   id: ID!
-  fid: FID!
-  newCustody: Bytes! # address
-  isActive: Boolean!
+  fname: String!
+  custodyAddr: Bytes! # address
+  recoveryAddr: Bytes! # address
+  expirationTimestamp: BigInt!
   createdAtBlock: BigInt!
   createdAtTimestamp: BigInt!
-  cancelledAtBlock: BigInt
-  cancelledAtTimestamp: BigInt
 }
