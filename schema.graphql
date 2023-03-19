@@ -1,6 +1,6 @@
 type FID @entity {
   id: ID!
-  owner: Bytes! # address
+  custodyAddr: Bytes! # address
   recoveryAddr: Bytes! # address
   recoveries: [Recovery!]! @derivedFrom(field: "fid")
   createdAtBlock: BigInt!
@@ -10,8 +10,8 @@ type FID @entity {
 type Recovery @entity {
   id: ID!
   fid: FID!
-  newOwner: Bytes! # address
-  isActivated: Boolean!
+  newCustody: Bytes! # address
+  isActive: Boolean!
   createdAtBlock: BigInt!
   createdAtTimestamp: BigInt!
   cancelledAtBlock: BigInt

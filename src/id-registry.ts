@@ -13,7 +13,7 @@ import {
 
 export function handleRegister(event: Register): void {
   let fid = new FID(event.params.id.toString());
-  fid.owner = event.params.to;
+  fid.custodyAddr = event.params.to;
   fid.recoveryAddr = event.params.recovery;
   fid.createdAtBlock = event.block.number;
   fid.createdAtTimestamp = event.block.timestamp;
