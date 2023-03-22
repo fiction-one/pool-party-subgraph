@@ -7,7 +7,8 @@
     "deploy": "graph deploy --product hosted-service nicky-ru/castify",
     "create-local": "graph create --node http://localhost:8020/ castify",
     "remove-local": "graph remove --node http://localhost:8020/ castify",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 castify"
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 castify",
+    "test": "graph test fname -d -v 0.5.2"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.42.4",
