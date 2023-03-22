@@ -10,8 +10,9 @@ type FName @entity {
   id: ID!
   fname: String!
   custodyAddr: Bytes! # address
-  recoveryAddr: Bytes! # address
-  expirationTimestamp: BigInt!
   createdAtBlock: BigInt!
   createdAtTimestamp: BigInt!
+  
+  recoveryAddr: Bytes # address
+  expirationTimestamp: BigInt
 }
