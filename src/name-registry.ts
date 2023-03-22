@@ -8,9 +8,6 @@ import {
 } from "../generated/NameRegistry/NameRegistry";
 
 export function handleTransfer(event: TransferEvent): void {
-  // from Address
-  // to Address
-  // tokenId bigInt
   let fname = FName.load(event.params.tokenId.toString());
 
   if (fname) {
@@ -21,6 +18,7 @@ export function handleTransfer(event: TransferEvent): void {
     fname.custodyAddr = event.params.to;
     fname.createdAtBlock = event.block.number;
     fname.createdAtTimestamp = event.block.timestamp;
+    fname.fname = "";
     fname.save();
   }
 }
