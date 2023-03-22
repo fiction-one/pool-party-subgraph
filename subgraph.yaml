@@ -53,6 +53,9 @@ dataSources:
       eventHandlers:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
+      callHandlers:
+        - function: register(bytes16,address,bytes32,address)
+          handler: handleRegister
       file: ./src/name-registry.ts
   - kind: ethereum
     name: BundleRegistry

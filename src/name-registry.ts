@@ -24,10 +24,12 @@ export function handleTransfer(event: TransferEvent): void {
 }
 
 export function handleRegister(call: RegisterCall): void {
-  // fname string
-  // to Address
-  // secret string
-  // recovery Address
+  const fname = new FName("1");
+  fname.custodyAddr = call.inputs.to;
+  fname.createdAtBlock = call.block.number;
+  fname.createdAtTimestamp = call.block.timestamp;
+  fname.fname = "test1";
+  fname.save();
 }
 
 export function handleRenew(event: RenewEvent): void {
