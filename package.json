@@ -7,10 +7,16 @@
     "deploy": "graph deploy --product hosted-service nicky-ru/castify",
     "create-local": "graph create --node http://localhost:8020/ castify",
     "remove-local": "graph remove --node http://localhost:8020/ castify",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 castify"
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 castify",
+    "test:fname": "graph test fname -d -v 0.5.2",
+    "test:fid": "graph test fid -d -v 0.5.2",
+    "test": "yarn test:fname && yarn test:fid"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.42.4",
     "@graphprotocol/graph-ts": "0.29.3"
+  },
+  "devDependencies": {
+    "matchstick-as": "^0.5.2"
   }
 }

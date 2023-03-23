@@ -1,7 +1,6 @@
 type FID @entity {
   id: ID!
   custodyAddr: Bytes! # address
-  recoveryAddr: Bytes! # address
   createdAtBlock: BigInt!
   createdAtTimestamp: BigInt!
 }
@@ -10,8 +9,15 @@ type FName @entity {
   id: ID!
   fname: String!
   custodyAddr: Bytes! # address
-  recoveryAddr: Bytes! # address
-  expirationTimestamp: BigInt!
   createdAtBlock: BigInt!
   createdAtTimestamp: BigInt!
+
+  recoveryAddr: Bytes # address
+  expirationTimestamp: BigInt
+}
+
+type User @entity {
+  id: ID!
+  fid: FID!
+  fname: FName!
 }

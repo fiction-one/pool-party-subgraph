@@ -1,11 +1,33 @@
+import { FName } from "./../generated/schema";
 import {
-  AdminChanged as AdminChangedEvent,
-  BeaconUpgraded as BeaconUpgradedEvent,
-  Upgraded as UpgradedEvent,
+  Renew as RenewEvent,
+  Transfer as TransferEvent,
 } from "../generated/NameRegistry/NameRegistry";
+import {
+  updateUserFnameId,
+  deleteUserFnameId,
+  initializeFname,
+} from "../utils/name-registry";
 
-export function handleAdminChanged(event: AdminChangedEvent): void {}
+export function handleTransfer(event: TransferEvent): void {
+  const tokenId = event.params.tokenId;
+  const newCustody = event.params.to;
+  const oldCustody = event.params.from;
 
-export function handleBeaconUpgraded(event: BeaconUpgradedEvent): void {}
+  let fname = FName.load(tokenId.toString());
 
-export function handleUpgraded(event: UpgradedEvent): void {}
+  if (!fname) {
+    fname = initializeFname(event);
+  }
+
+  fname.custodyAddr = newCustody;
+  fname.save();
+
+  deleteUserFnameId(oldCustody.toHex());
+  updateUserFnameId(newCustody.toHex(), tokenId.toString());
+}
+
+export function handleRenew(event: RenewEvent): void {
+  // tokenId bigInt
+  // expiry bigInt
+}
