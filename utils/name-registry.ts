@@ -1,5 +1,5 @@
-import { FName } from "./../generated/schema";
-import { Transfer } from "./../generated/NameRegistry/NameRegistry";
+import { FName } from "../generated/schema";
+import { Transfer } from "../generated/NameRegistry/NameRegistry";
 import { BigInt, Bytes } from "@graphprotocol/graph-ts";
 import { User } from "../generated/schema";
 

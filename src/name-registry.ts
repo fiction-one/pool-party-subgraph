@@ -3,7 +3,11 @@ import {
   Renew as RenewEvent,
   Transfer as TransferEvent,
 } from "../generated/NameRegistry/NameRegistry";
-import { updateUserFnameId, deleteUserFnameId, initializeFname } from "./utils";
+import {
+  updateUserFnameId,
+  deleteUserFnameId,
+  initializeFname,
+} from "../utils/name-registry";
 
 export function handleTransfer(event: TransferEvent): void {
   const tokenId = event.params.tokenId;
