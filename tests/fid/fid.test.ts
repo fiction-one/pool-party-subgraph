@@ -48,7 +48,6 @@ describe("Farcaster IDs", () => {
 
       assert.fieldEquals("User", custodyAddr1, "id", custodyAddr1);
       assert.fieldEquals("User", custodyAddr1, "fid", fid1);
-      assert.fieldEquals("User", custodyAddr1, "fname", "");
     });
   });
   describe("Transfer Event", () => {
@@ -87,7 +86,8 @@ describe("Farcaster IDs", () => {
 
       assert.fieldEquals("User", custodyAddr2, "id", custodyAddr2);
       assert.fieldEquals("User", custodyAddr2, "fid", fid1);
-      assert.fieldEquals("User", custodyAddr2, "fname", "");
+      assert.fieldEquals("User", custodyAddr1, "id", custodyAddr1);
+      assert.fieldEquals("User", custodyAddr1, "fid", "null");
     });
   });
 });

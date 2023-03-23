@@ -18,6 +18,6 @@ type FName @entity {
 
 type User @entity {
   id: ID!
-  fid: FID!
-  fname: FName!
+  fid: FID
+  fname: FName
 }

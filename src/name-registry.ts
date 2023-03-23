@@ -24,7 +24,7 @@ export function handleTransfer(event: TransferEvent): void {
   fname.save();
 
   deleteUserFnameId(oldCustody.toHex());
-  updateUserFnameId(newCustody.toHex(), tokenId.toString());
+  updateUserFnameId(newCustody.toHex(), fname);
 }
 
 export function handleRenew(event: RenewEvent): void {

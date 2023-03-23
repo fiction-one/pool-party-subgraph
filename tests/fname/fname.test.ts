@@ -15,6 +15,7 @@ const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 let custodyAddr1: string;
 let custodyAddr2: string;
 let emptyFName = "";
+let nullFName = "null";
 
 let fnameExample = "forgiven";
 let tokenIdExample =
@@ -83,17 +84,23 @@ describe("NameRegistry", () => {
       assert.fieldEquals("User", custodyAddr1, "fname", tokenIdExample);
     });
     test("should update old owner's fname", () => {
-      const from = custodyAddr1;
+      let transferEvent1 = createTransferEvent(
+        ZERO_ADDRESS,
+        custodyAddr1,
+        tokenIdExample
+      );
 
-      let transferEvent = createTransferEvent(
-        from,
+      handleTransfer(transferEvent1);
+
+      let transferEvent2 = createTransferEvent(
+        custodyAddr1,
         custodyAddr2,
         tokenIdExample
       );
 
-      handleTransfer(transferEvent);
+      handleTransfer(transferEvent2);
 
-      assert.fieldEquals("User", custodyAddr1, "fname", emptyFName);
+      assert.fieldEquals("User", custodyAddr1, "fname", nullFName);
     });
   });
 });
