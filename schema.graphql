@@ -1,7 +1,6 @@
 type FID @entity {
   id: ID!
   custodyAddr: Bytes! # address
-  recoveryAddr: Bytes! # address
   createdAtBlock: BigInt!
   createdAtTimestamp: BigInt!
 }
