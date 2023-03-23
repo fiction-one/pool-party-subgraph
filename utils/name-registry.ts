@@ -14,15 +14,14 @@ export function initializeFname(event: Transfer): FName {
   return fname;
 }
 
-export function updateUserFnameId(to: string, fnameId: string): void {
+export function updateUserFnameId(to: string, fname: FName): void {
   let user = User.load(to);
 
   if (!user) {
     user = new User(to);
-    user.fid = "0";
   }
 
-  user.fname = fnameId;
+  user.fname = fname.id;
   user.save();
 }
 
@@ -31,10 +30,9 @@ export function deleteUserFnameId(from: string): void {
 
   if (!user) {
     user = new User(from);
-    user.fid = "0";
   }
 
-  user.fname = "";
+  user.fname = null;
   user.save();
 }
 
