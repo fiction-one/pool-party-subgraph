@@ -4,58 +4,98 @@ import {
   assert,
   beforeAll,
   logStore,
-  afterAll,
+  clearStore,
+  afterEach,
 } from "matchstick-as/assembly/index";
 
-import { createTransferEvent, createRegisterCall } from "./utils";
-import { handleTransfer, handleRegister } from "../../src/name-registry";
+import { createTransferEvent } from "./utils";
+import { handleTransfer } from "../../src/name-registry";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
-let tokenId1 = "";
-let custodyAddr1 = "";
-let fname1 = "";
-let recoveryAddr = "";
+let custodyAddr1: string;
+let custodyAddr2: string;
+let emptyFName = "";
+
+let fnameExample = "forgiven";
+let tokenIdExample =
+  "46332820166748109116313618006930084042246649282465195123424451738721335640064";
+let fnameHexExample =
+  "0x666f72676976656e000000000000000000000000000000000000000000000000";
 
 describe("NameRegistry", () => {
-  afterAll(() => {
-    logStore();
-  });
   describe("Transfer Event", () => {
     beforeAll(() => {
-      tokenId1 =
-        "21923710825338253839304839389520952719014825665598212984806875314222184529920";
-
       custodyAddr1 = "0x39ff405821ece5c94e976f3d6ac676f125976303";
+      custodyAddr2 = "0x39ff405821ece5c94e976f3d6ac676f125976304";
     });
-    test("should handle transfer event", () => {
+    afterEach(() => {
+      logStore();
+      clearStore();
+    });
+    test("if fname doesn't exist should create a new fname ", () => {
       const from = ZERO_ADDRESS;
 
-      let transferEvent = createTransferEvent(from, custodyAddr1, tokenId1);
+      let transferEvent = createTransferEvent(
+        from,
+        custodyAddr1,
+        tokenIdExample
+      );
 
       handleTransfer(transferEvent);
 
-      assert.fieldEquals("FName", tokenId1, "custodyAddr", custodyAddr1);
+      assert.fieldEquals("FName", tokenIdExample, "custodyAddr", custodyAddr1);
+      assert.fieldEquals("FName", tokenIdExample, "fname", fnameExample);
+      assert.fieldEquals("FName", tokenIdExample, "createdAtBlock", "1");
+      assert.fieldEquals("FName", tokenIdExample, "createdAtTimestamp", "1");
     });
-  });
-  describe("Register Call", () => {
-    beforeAll(() => {
-      tokenId1 = "1";
-      fname1 = "test1";
-      custodyAddr1 = "0x39ff405821ece5c94e976f3d6ac676f125976303";
-      recoveryAddr = "0x39ff405821ece5c94e976f3d6ac676f125976306";
-    });
-    test("should handle register call", () => {
-      const registerCall = createRegisterCall(
-        fname1,
+    test("if fname exists, it should update this fname", () => {
+      let transferEvent1 = createTransferEvent(
+        ZERO_ADDRESS,
         custodyAddr1,
-        "secret",
-        recoveryAddr
+        tokenIdExample
       );
 
-      handleRegister(registerCall);
+      handleTransfer(transferEvent1);
 
-      assert.fieldEquals("FName", tokenId1, "fname", fname1);
+      let transferEvent2 = createTransferEvent(
+        custodyAddr1,
+        custodyAddr2,
+        tokenIdExample
+      );
+
+      handleTransfer(transferEvent2);
+
+      assert.fieldEquals("FName", tokenIdExample, "custodyAddr", custodyAddr2);
+      assert.fieldEquals("FName", tokenIdExample, "fname", fnameExample);
+      assert.fieldEquals("FName", tokenIdExample, "createdAtBlock", "1");
+      assert.fieldEquals("FName", tokenIdExample, "createdAtTimestamp", "1");
+    });
+    test("should update new owner's fname", () => {
+      const from = ZERO_ADDRESS;
+
+      let transferEvent = createTransferEvent(
+        from,
+        custodyAddr1,
+        tokenIdExample
+      );
+
+      handleTransfer(transferEvent);
+
+      assert.fieldEquals("User", custodyAddr1, "fname", tokenIdExample);
+    });
+    test("should update old owner's fname", () => {
+      const from = custodyAddr1;
+
+      let transferEvent = createTransferEvent(
+        from,
+        custodyAddr2,
+        tokenIdExample
+      );
+
+      handleTransfer(transferEvent);
+
+      assert.fieldEquals("User", custodyAddr1, "fname", emptyFName);
     });
   });
 });
