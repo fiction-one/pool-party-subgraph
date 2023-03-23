@@ -9,7 +9,7 @@ export function handleRegister(event: Register): void {
   fid.createdAtTimestamp = event.block.timestamp;
   fid.save();
 
-  updateUserFid(event.params.to.toHex(), event.params.id.toString());
+  updateUserFid(event.params.to.toHex(), fid);
 }
 
 export function handleTransfer(event: Transfer): void {
@@ -18,8 +18,7 @@ export function handleTransfer(event: Transfer): void {
   if (fid) {
     fid.custodyAddr = event.params.to;
     fid.save();
+    deleteUserFid(event.params.from.toHex());
+    updateUserFid(event.params.to.toHex(), fid);
   }
-
-  deleteUserFid(event.params.from.toHex());
-  updateUserFid(event.params.to.toHex(), event.params.id.toString());
 }
