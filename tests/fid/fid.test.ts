@@ -3,7 +3,6 @@ import {
   test,
   assert,
   clearStore,
-  logStore,
   afterEach,
   beforeAll,
 } from "matchstick-as/assembly/index";
@@ -62,7 +61,6 @@ describe("Farcaster IDs", () => {
       );
     });
     afterEach(() => {
-      logStore();
       clearStore();
     });
     test("should handle fid transfer", () => {

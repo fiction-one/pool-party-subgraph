@@ -3,7 +3,6 @@ import {
   describe,
   assert,
   beforeAll,
-  logStore,
   clearStore,
   afterEach,
 } from "matchstick-as/assembly/index";
@@ -30,7 +29,6 @@ describe("NameRegistry", () => {
       custodyAddr2 = "0x39ff405821ece5c94e976f3d6ac676f125976304";
     });
     afterEach(() => {
-      logStore();
       clearStore();
     });
     test("if fname doesn't exist should create a new fname ", () => {
