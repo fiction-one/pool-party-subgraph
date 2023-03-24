@@ -1,12 +1,16 @@
 import { ethereum, Address, BigInt } from "@graphprotocol/graph-ts";
-import { newMockEvent } from "matchstick-as/assembly/index";
+import {
+  newMockEvent,
+  createMockedFunction,
+} from "matchstick-as/assembly/index";
 
 import { Transfer as TransferEvent } from "../../generated/NameRegistry/NameRegistry";
 
 export const createTransferEvent = (
   from: string,
   to: string,
-  tokenId: string
+  tokenId: string,
+  contractAddr: Address
 ): TransferEvent => {
   let mockEvent = newMockEvent();
   let transferEvent = new TransferEvent(
@@ -39,5 +43,26 @@ export const createTransferEvent = (
   transferEvent.parameters[1] = toParam;
   transferEvent.parameters[2] = tokenIdParam;
 
+  transferEvent.address = contractAddr;
+
   return transferEvent;
+};
+
+export const mockGetTokenExpirationTimestamp = (
+  tokenId: string,
+  contractAddr: Address,
+  REGISTRATION_PERIOD: string
+): void => {
+  let mockEvent = newMockEvent();
+  let tokenIdParam = ethereum.Value.fromUnsignedBigInt(
+    BigInt.fromString(tokenId)
+  );
+
+  let expectedExpirationTimestamp = BigInt.fromString(REGISTRATION_PERIOD).plus(
+    mockEvent.block.timestamp
+  );
+
+  createMockedFunction(contractAddr, "expiryOf", "expiryOf(uint256):(uint256)")
+    .withArgs([tokenIdParam])
+    .returns([ethereum.Value.fromUnsignedBigInt(expectedExpirationTimestamp)]);
 };
