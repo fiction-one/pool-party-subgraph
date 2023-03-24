@@ -1,5 +1,5 @@
 import { FName } from "../generated/schema";
-import { Transfer } from "../generated/NameRegistry/NameRegistry";
+import { Transfer, NameRegistry } from "../generated/NameRegistry/NameRegistry";
 import { BigInt, Bytes } from "@graphprotocol/graph-ts";
 import { User } from "../generated/schema";
 
@@ -9,7 +9,8 @@ export function initializeFname(event: Transfer): FName {
   const fname = new FName(tokenId.toString());
   fname.fname = extractNameFromId(tokenId);
   fname.createdAtBlock = event.block.number;
-  fname.createdAtTimestamp = event.block.timestamp;
+  fname.createdAtTs = event.block.timestamp;
+  fname.expiryTs = getTokenExpiryTs(event);
 
   return fname;
 }
@@ -40,4 +41,11 @@ export function extractNameFromId(tokenId: BigInt): string {
   const tokenIdHex = tokenId.toHexString();
   const tokenIdBytes = Bytes.fromHexString(tokenIdHex);
   return tokenIdBytes.toString();
+}
+
+function getTokenExpiryTs(event: Transfer): BigInt {
+  const nameRegistry = NameRegistry.bind(event.address);
+  const tokenId = event.params.tokenId;
+  const expiryTsCallResult = nameRegistry.try_expiryOf(tokenId);
+  return expiryTsCallResult.value;
 }
