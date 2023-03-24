@@ -11,7 +11,7 @@ import {
 
 import { createTransferEvent } from "./utils";
 import { handleTransfer } from "../../src/name-registry";
-import { mockGetTokenExpirationTimestamp } from "./utils";
+import { mockGetTokenExpiryTs } from "./utils";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
@@ -33,11 +33,7 @@ describe("NameRegistry", () => {
     beforeAll(() => {
       custodyAddr1 = "0x39ff405821ece5c94e976f3d6ac676f125976303";
       custodyAddr2 = "0x39ff405821ece5c94e976f3d6ac676f125976304";
-      mockGetTokenExpirationTimestamp(
-        FNAME_ID,
-        NAME_REGISTRY_ADDR,
-        REGISTRATION_PERIOD
-      );
+      mockGetTokenExpiryTs(FNAME_ID, NAME_REGISTRY_ADDR, REGISTRATION_PERIOD);
     });
     afterEach(() => {
       clearStore();
@@ -134,14 +130,9 @@ describe("NameRegistry", () => {
         .plus(BigInt.fromString(REGISTRATION_PERIOD))
         .toString();
 
-      log.info(expectedExpiration, []);
+      log.info("Expected expiry timestamp {}", [expectedExpiration]);
 
-      assert.fieldEquals(
-        "FName",
-        FNAME_ID,
-        "expirationTimestamp",
-        expectedExpiration
-      );
+      assert.fieldEquals("FName", FNAME_ID, "expiryTs", expectedExpiration);
     });
   });
 });

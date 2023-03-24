@@ -10,7 +10,7 @@ export function initializeFname(event: Transfer): FName {
   fname.fname = extractNameFromId(tokenId);
   fname.createdAtBlock = event.block.number;
   fname.createdAtTs = event.block.timestamp;
-  fname.expirationTimestamp = getTokenExpirationTimestamp(event);
+  fname.expiryTs = getTokenExpiryTs(event);
 
   return fname;
 }
@@ -43,9 +43,9 @@ export function extractNameFromId(tokenId: BigInt): string {
   return tokenIdBytes.toString();
 }
 
-function getTokenExpirationTimestamp(event: Transfer): BigInt {
+function getTokenExpiryTs(event: Transfer): BigInt {
   const nameRegistry = NameRegistry.bind(event.address);
   const tokenId = event.params.tokenId;
-  const expirationTimestampCallResult = nameRegistry.try_expiryOf(tokenId);
-  return expirationTimestampCallResult.value;
+  const expiryTsCallResult = nameRegistry.try_expiryOf(tokenId);
+  return expiryTsCallResult.value;
 }

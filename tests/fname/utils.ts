@@ -48,7 +48,7 @@ export const createTransferEvent = (
   return transferEvent;
 };
 
-export const mockGetTokenExpirationTimestamp = (
+export const mockGetTokenExpiryTs = (
   tokenId: string,
   contractAddr: Address,
   REGISTRATION_PERIOD: string
@@ -58,11 +58,11 @@ export const mockGetTokenExpirationTimestamp = (
     BigInt.fromString(tokenId)
   );
 
-  let expectedExpirationTimestamp = BigInt.fromString(REGISTRATION_PERIOD).plus(
+  let expectedExpiryTs = BigInt.fromString(REGISTRATION_PERIOD).plus(
     mockEvent.block.timestamp
   );
 
   createMockedFunction(contractAddr, "expiryOf", "expiryOf(uint256):(uint256)")
     .withArgs([tokenIdParam])
-    .returns([ethereum.Value.fromUnsignedBigInt(expectedExpirationTimestamp)]);
+    .returns([ethereum.Value.fromUnsignedBigInt(expectedExpiryTs)]);
 };
