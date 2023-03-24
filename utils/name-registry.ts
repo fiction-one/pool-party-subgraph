@@ -9,7 +9,7 @@ export function initializeFname(event: Transfer): FName {
   const fname = new FName(tokenId.toString());
   fname.fname = extractNameFromId(tokenId);
   fname.createdAtBlock = event.block.number;
-  fname.createdAtTimestamp = event.block.timestamp;
+  fname.createdAtTs = event.block.timestamp;
   fname.expirationTimestamp = getTokenExpirationTimestamp(event);
 
   return fname;

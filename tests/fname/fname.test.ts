@@ -57,7 +57,7 @@ describe("NameRegistry", () => {
       assert.fieldEquals("FName", FNAME_ID, "custodyAddr", custodyAddr1);
       assert.fieldEquals("FName", FNAME_ID, "fname", FNAME);
       assert.fieldEquals("FName", FNAME_ID, "createdAtBlock", "1");
-      assert.fieldEquals("FName", FNAME_ID, "createdAtTimestamp", "1");
+      assert.fieldEquals("FName", FNAME_ID, "createdAtTs", "1");
     });
     test("if fname exists, it should update this fname", () => {
       let transferEvent1 = createTransferEvent(
@@ -81,7 +81,7 @@ describe("NameRegistry", () => {
       assert.fieldEquals("FName", FNAME_ID, "custodyAddr", custodyAddr2);
       assert.fieldEquals("FName", FNAME_ID, "fname", FNAME);
       assert.fieldEquals("FName", FNAME_ID, "createdAtBlock", "1");
-      assert.fieldEquals("FName", FNAME_ID, "createdAtTimestamp", "1");
+      assert.fieldEquals("FName", FNAME_ID, "createdAtTs", "1");
     });
     test("should update new owner's fname", () => {
       const from = ZERO_ADDRESS;

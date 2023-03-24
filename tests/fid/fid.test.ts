@@ -35,7 +35,7 @@ describe("Farcaster IDs", () => {
 
       assert.fieldEquals("FID", fid1, "custodyAddr", custodyAddr1);
       assert.fieldEquals("FID", fid1, "createdAtBlock", "1");
-      assert.fieldEquals("FID", fid1, "createdAtTimestamp", "1");
+      assert.fieldEquals("FID", fid1, "createdAtTs", "1");
     });
     test("should update user", () => {
       const registerEvent = createRegisterEvent(
@@ -73,7 +73,7 @@ describe("Farcaster IDs", () => {
 
       assert.fieldEquals("FID", fid1, "custodyAddr", custodyAddr2);
       assert.fieldEquals("FID", fid1, "createdAtBlock", "1");
-      assert.fieldEquals("FID", fid1, "createdAtTimestamp", "1");
+      assert.fieldEquals("FID", fid1, "createdAtTs", "1");
     });
     test("should update user", () => {
       handleRegister(registerEventGlobal);
