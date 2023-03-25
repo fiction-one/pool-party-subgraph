@@ -20,6 +20,8 @@ export function handleTransfer(event: Transfer): void {
 
   if (fid) {
     updateFidCustody(fid, newCustody);
+    fid.save();
+    
     deleteUserFid(oldCustody);
     updateUserFid(newCustody, fid);
   }
