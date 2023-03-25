@@ -1,5 +1,5 @@
 {
   "extends": "@graphprotocol/graph-ts/types/tsconfig.base.json",
-  "include": ["src"],
+  "include": ["src", "tests/fid", "tests/fname"],
   "exclude": ["node_modules", "generated", "build"]
 }

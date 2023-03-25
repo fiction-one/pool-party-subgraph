@@ -1,29 +1,30 @@
-import { FName } from "../../generated/schema";
 import {
   Renew as RenewEvent,
   Transfer as TransferEvent,
 } from "../../generated/NameRegistry/NameRegistry";
-import { updateUserFnameId, deleteUserFnameId, initializeFname } from "./utils";
+import {
+  updateFnameCustody,
+  loadOrCreateFname,
+  loadFname,
+  updateFnameExpiry,
+} from "./utils";
+import { updateUserFnameId, deleteUserFnameId } from "../user/utils";
 
 export function handleTransfer(event: TransferEvent): void {
-  const tokenId = event.params.tokenId;
   const newCustody = event.params.to;
   const oldCustody = event.params.from;
 
-  let fname = FName.load(tokenId.toString());
+  let fname = loadOrCreateFname(event);
 
-  if (!fname) {
-    fname = initializeFname(event);
-  }
-
-  fname.custodyAddr = newCustody;
-  fname.save();
-
+  updateFnameCustody(fname, newCustody);
   deleteUserFnameId(oldCustody.toHex());
   updateUserFnameId(newCustody.toHex(), fname);
 }
 
 export function handleRenew(event: RenewEvent): void {
-  // tokenId bigInt
-  // expiry bigInt
+  let fname = loadFname(event.params.tokenId);
+
+  if (fname) {
+    updateFnameExpiry(fname, event.params.expiry);
+  }
 }
