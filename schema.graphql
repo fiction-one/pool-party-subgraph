@@ -1,6 +1,6 @@
 type FID @entity {
   id: ID!
-  custodyAddr: Bytes! # address
+  custodyAddr: String! # address
   createdAtBlock: BigInt!
   createdAtTs: BigInt!
 }
@@ -44,4 +44,11 @@ type _Schema_
       { entity: "FName", fields: [{ name: "fname" }, { name: "custodyAddr" }] }
     ]
   )
-  
+  @fulltext(
+    name: "fidSearch"
+    language: simple
+    algorithm: rank
+    include: [
+      { entity: "FID", fields: [{ name: "id" }, { name: "custodyAddr" }] }
+    ]
+  )

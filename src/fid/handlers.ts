@@ -14,11 +14,13 @@ export function handleRegister(event: Register): void {
 }
 
 export function handleTransfer(event: Transfer): void {
-  let fid = loadFID(event.params.id);
+  const fid = loadFID(event.params.id);
+  const newCustody = event.params.to.toHex();
+  const oldCustody = event.params.from.toHex();
 
   if (fid) {
-    updateFidCustody(fid, event.params.to);
-    deleteUserFid(event.params.from.toHex());
-    updateUserFid(event.params.to.toHex(), fid);
+    updateFidCustody(fid, newCustody);
+    deleteUserFid(oldCustody);
+    updateUserFid(newCustody, fid);
   }
 }
