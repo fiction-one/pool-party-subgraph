@@ -25,6 +25,11 @@ type Count @entity {
   count: BigInt
 }
 
+type Pool @entity {
+  id: ID!
+  address: String!
+}
+
 type _Schema_
   @fulltext(
     name: "fnameSearch"

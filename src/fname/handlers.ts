@@ -1,3 +1,4 @@
+import { ChangePool } from './../../generated/NameRegistry/NameRegistry';
 import {
   Renew as RenewEvent,
   Transfer as TransferEvent,
@@ -8,6 +9,7 @@ import {
   loadFname,
   updateFnameExpiry,
   updateFnameExpiryAsync,
+  loadOrCreatePool,
 } from "./helpers";
 import { updateUserFnameId, deleteUserFnameId } from "../user/helpers";
 
@@ -32,4 +34,10 @@ export function handleRenew(event: RenewEvent): void {
     updateFnameExpiry(fname, event.params.expiry);
     fname.save();
   }
+}
+
+export function handleChangePool(event: ChangePool): void {
+  let pool = loadOrCreatePool();
+  pool.address = event.params.pool.toHex();
+  pool.save()
 }

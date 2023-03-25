@@ -1,6 +1,6 @@
 import { BigInt, Bytes } from "@graphprotocol/graph-ts";
 
-import { FName } from "../../generated/schema";
+import { FName, Pool } from "../../generated/schema";
 import {
   Transfer,
   NameRegistry,
@@ -8,6 +8,7 @@ import {
 import { incrementCount } from "../global/helpers";
 
 export const FNAME_COUNTER_ID = "fname_count";
+export const POOL_ID = "fname_pool";
 
 export function loadOrCreateFname(event: Transfer): FName {
   let fname = loadFname(event.params.tokenId);
@@ -59,4 +60,14 @@ function getTokenExpiryTs(event: Transfer): BigInt {
   const nameRegistry = NameRegistry.bind(event.address);
   const tokenId = event.params.tokenId;
   return nameRegistry.expiryOf(tokenId);
+}
+
+export function loadOrCreatePool(): Pool {
+  let pool = Pool.load(POOL_ID);
+
+  if (!pool) {
+    pool = new Pool(POOL_ID);
+  }
+
+  return pool;
 }

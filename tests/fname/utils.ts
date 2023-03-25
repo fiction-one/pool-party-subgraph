@@ -7,6 +7,7 @@ import {
 import {
   Transfer as TransferEvent,
   Renew as RenewEvent,
+  ChangePool as ChangePoolEvent,
 } from "../../generated/NameRegistry/NameRegistry";
 
 export const createTransferEvent = (
@@ -85,6 +86,31 @@ export const createRenewEvent = (
   renewEvent.address = contractAddr;
 
   return renewEvent;
+};
+
+export const createChangePoolEvent = (pool: string): ChangePoolEvent => {
+  let mockEvent = newMockEvent();
+  let changePoolEvent = new ChangePoolEvent(
+    mockEvent.address,
+    mockEvent.logIndex,
+    mockEvent.transactionLogIndex,
+    mockEvent.logType,
+    mockEvent.block,
+    mockEvent.transaction,
+    mockEvent.parameters,
+    mockEvent.receipt
+  );
+
+  changePoolEvent.parameters = new Array<ethereum.EventParam>(1);
+
+  let poolParam = new ethereum.EventParam(
+    "pool",
+    ethereum.Value.fromAddress(Address.fromString(pool))
+  );
+
+  changePoolEvent.parameters[0] = poolParam;
+
+  return changePoolEvent;
 };
 
 export const mockGetTokenExpiryTs = (
