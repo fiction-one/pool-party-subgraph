@@ -7,13 +7,14 @@ import {
   clearStore,
   afterEach,
   log,
-  logStore,
+  beforeEach,
 } from "matchstick-as/assembly/index";
 
 import { createRenewEvent, createTransferEvent } from "./utils";
 import { handleRenew, handleTransfer } from "../../src/fname/handlers";
 import { mockGetTokenExpiryTs } from "./utils";
-import { Transfer } from "../../generated/NameRegistry/NameRegistry";
+import { Transfer as TransferEvent } from "../../generated/NameRegistry/NameRegistry";
+import { FNAME_COUNTER_ID } from "../../src/fname/helpers";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 const CUSTODY_ADDRESS_1 = "0x39ff405821ece5c94e976f3d6ac676f125976303";
@@ -24,19 +25,27 @@ const NULL_FNAME = "null";
 let FNAME = "forgiven";
 let FNAME_ID =
   "46332820166748109116313618006930084042246649282465195123424451738721335640064";
+let FNAME_ID_2 =
+  "46332820166748109116313618006930084042246649282465195123424451738721335640065";
 const REGISTRATION_PERIOD = "31536000";
+
+let transferEvent: TransferEvent;
 
 const createTransferEventWithContstants = (
   from: string = ZERO_ADDRESS,
   to: string = CUSTODY_ADDRESS_1,
   tokenId: string = FNAME_ID,
   nameRegistry: Address = Address.fromString(NAME_REGISTRY_ADDR)
-): Transfer => {
+): TransferEvent => {
   return createTransferEvent(from, to, tokenId, nameRegistry);
 };
 
 describe("NameRegistry", () => {
   describe("Transfer Event", () => {
+    beforeEach(() => {
+      transferEvent = createTransferEventWithContstants();
+      handleTransfer(transferEvent);
+    });
     beforeAll(() => {
       mockGetTokenExpiryTs(
         FNAME_ID,
@@ -48,20 +57,12 @@ describe("NameRegistry", () => {
       clearStore();
     });
     test("if fname doesn't exist should create a new fname ", () => {
-      let transferEvent = createTransferEventWithContstants();
-
-      handleTransfer(transferEvent);
-
       assert.fieldEquals("FName", FNAME_ID, "custodyAddr", CUSTODY_ADDRESS_1);
       assert.fieldEquals("FName", FNAME_ID, "fname", FNAME);
       assert.fieldEquals("FName", FNAME_ID, "createdAtBlock", "1");
       assert.fieldEquals("FName", FNAME_ID, "createdAtTs", "1");
     });
     test("if fname exists, it should update this fname", () => {
-      let transferEvent1 = createTransferEventWithContstants();
-
-      handleTransfer(transferEvent1);
-
       let transferEvent2 = createTransferEventWithContstants(
         CUSTODY_ADDRESS_1,
         CUSTODY_ADDRESS_2
@@ -75,17 +76,9 @@ describe("NameRegistry", () => {
       assert.fieldEquals("FName", FNAME_ID, "createdAtTs", "1");
     });
     test("should update new owner's fname", () => {
-      let transferEvent = createTransferEventWithContstants();
-
-      handleTransfer(transferEvent);
-
       assert.fieldEquals("User", CUSTODY_ADDRESS_1, "fname", FNAME_ID);
     });
     test("should update old owner's fname", () => {
-      let transferEvent1 = createTransferEventWithContstants();
-
-      handleTransfer(transferEvent1);
-
       let transferEvent2 = createTransferEventWithContstants(
         CUSTODY_ADDRESS_1,
         CUSTODY_ADDRESS_2
@@ -96,10 +89,6 @@ describe("NameRegistry", () => {
       assert.fieldEquals("User", CUSTODY_ADDRESS_1, "fname", NULL_FNAME);
     });
     test("should set expiration timestamp", () => {
-      let transferEvent = createTransferEventWithContstants();
-
-      handleTransfer(transferEvent);
-
       const expectedExpiration = transferEvent.block.timestamp
         .plus(BigInt.fromString(REGISTRATION_PERIOD))
         .toString();
@@ -108,19 +97,44 @@ describe("NameRegistry", () => {
 
       assert.fieldEquals("FName", FNAME_ID, "expiryTs", expectedExpiration);
     });
+    test("new fname should increment totalFNames", () => {
+      assert.fieldEquals("Count", FNAME_COUNTER_ID, "count", "1");
+
+      let transferEvent2 = createTransferEventWithContstants(
+        CUSTODY_ADDRESS_1,
+        CUSTODY_ADDRESS_2
+      );
+
+      handleTransfer(transferEvent2);
+
+      assert.fieldEquals("Count", FNAME_COUNTER_ID, "count", "1");
+
+      let transferEvent3 = createTransferEventWithContstants(
+        CUSTODY_ADDRESS_2,
+        CUSTODY_ADDRESS_1,
+        FNAME_ID_2
+      );
+
+      mockGetTokenExpiryTs(
+        FNAME_ID_2,
+        Address.fromString(NAME_REGISTRY_ADDR),
+        REGISTRATION_PERIOD
+      );
+
+      handleTransfer(transferEvent3);
+
+      assert.fieldEquals("Count", FNAME_COUNTER_ID, "count", "2");
+    });
   });
   describe("Renew Event", () => {
     afterEach(() => {
       clearStore();
     });
     test("should update expiration timestamp", () => {
-      
       let transferEvent = createTransferEventWithContstants();
       handleTransfer(transferEvent);
 
-      transferEvent.block.timestamp = BigInt.fromString(
-        "1610000000"
-      );
+      transferEvent.block.timestamp = BigInt.fromString("1610000000");
 
       const newExpiryTs = transferEvent.block.timestamp.plus(
         BigInt.fromString(REGISTRATION_PERIOD)
