@@ -24,6 +24,10 @@ export function handleTransfer(event: TransferEvent): void {
 }
 
 export function handleRenew(event: RenewEvent): void {
-  // tokenId bigInt
-  // expiry bigInt
+  let fname = FName.load(event.params.tokenId.toString());
+
+  if (fname) {
+    fname.expiryTs = event.params.expiry;
+    fname.save();
+  }
 }

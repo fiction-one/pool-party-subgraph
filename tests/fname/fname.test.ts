@@ -7,10 +7,11 @@ import {
   clearStore,
   afterEach,
   log,
+  logStore,
 } from "matchstick-as/assembly/index";
 
-import { createTransferEvent } from "./utils";
-import { handleTransfer } from "../../src/fname/name-registry";
+import { createRenewEvent, createTransferEvent } from "./utils";
+import { handleRenew, handleTransfer } from "../../src/fname/name-registry";
 import { mockGetTokenExpiryTs } from "./utils";
 import { Transfer } from "../../generated/NameRegistry/NameRegistry";
 
@@ -106,6 +107,34 @@ describe("NameRegistry", () => {
       log.info("Expected expiry timestamp {}", [expectedExpiration]);
 
       assert.fieldEquals("FName", FNAME_ID, "expiryTs", expectedExpiration);
+    });
+  });
+  describe("Renew Event", () => {
+    afterEach(() => {
+      clearStore();
+    });
+    test("should update expiration timestamp", () => {
+      
+      let transferEvent = createTransferEventWithContstants();
+      handleTransfer(transferEvent);
+
+      transferEvent.block.timestamp = BigInt.fromString(
+        "1610000000"
+      );
+
+      const newExpiryTs = transferEvent.block.timestamp.plus(
+        BigInt.fromString(REGISTRATION_PERIOD)
+      );
+
+      let renewEvent = createRenewEvent(
+        FNAME_ID,
+        newExpiryTs.toString(),
+        Address.fromString(NAME_REGISTRY_ADDR)
+      );
+
+      handleRenew(renewEvent);
+
+      assert.fieldEquals("FName", FNAME_ID, "expiryTs", newExpiryTs.toString());
     });
   });
 });

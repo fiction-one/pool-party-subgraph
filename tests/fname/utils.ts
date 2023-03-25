@@ -4,7 +4,10 @@ import {
   createMockedFunction,
 } from "matchstick-as/assembly/index";
 
-import { Transfer as TransferEvent } from "../../generated/NameRegistry/NameRegistry";
+import {
+  Transfer as TransferEvent,
+  Renew as RenewEvent,
+} from "../../generated/NameRegistry/NameRegistry";
 
 export const createTransferEvent = (
   from: string,
@@ -46,6 +49,42 @@ export const createTransferEvent = (
   transferEvent.address = contractAddr;
 
   return transferEvent;
+};
+
+export const createRenewEvent = (
+  tokenId: string,
+  expiry: string,
+  contractAddr: Address
+): RenewEvent => {
+  let mockEvent = newMockEvent();
+  let renewEvent = new RenewEvent(
+    mockEvent.address,
+    mockEvent.logIndex,
+    mockEvent.transactionLogIndex,
+    mockEvent.logType,
+    mockEvent.block,
+    mockEvent.transaction,
+    mockEvent.parameters,
+    mockEvent.receipt
+  );
+
+  renewEvent.parameters = new Array<ethereum.EventParam>(2);
+
+  let tokenIdParam = new ethereum.EventParam(
+    "tokenId",
+    ethereum.Value.fromUnsignedBigInt(BigInt.fromString(tokenId))
+  );
+  let expiryParam = new ethereum.EventParam(
+    "expiry",
+    ethereum.Value.fromUnsignedBigInt(BigInt.fromString(expiry))
+  );
+
+  renewEvent.parameters[0] = tokenIdParam;
+  renewEvent.parameters[1] = expiryParam;
+
+  renewEvent.address = contractAddr;
+
+  return renewEvent;
 };
 
 export const mockGetTokenExpiryTs = (
