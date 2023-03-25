@@ -11,14 +11,14 @@ import {
 import { updateUserFnameId, deleteUserFnameId } from "../user/helpers";
 
 export function handleTransfer(event: TransferEvent): void {
-  const newCustody = event.params.to;
-  const oldCustody = event.params.from;
+  const newCustody = event.params.to.toHex();
+  const oldCustody = event.params.from.toHex();
 
   let fname = loadOrCreateFname(event);
 
   updateFnameCustody(fname, newCustody);
-  deleteUserFnameId(oldCustody.toHex());
-  updateUserFnameId(newCustody.toHex(), fname);
+  deleteUserFnameId(oldCustody);
+  updateUserFnameId(newCustody, fname);
 }
 
 export function handleRenew(event: RenewEvent): void {

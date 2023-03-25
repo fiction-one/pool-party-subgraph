@@ -1,6 +1,6 @@
 type FID @entity {
   id: ID!
-  custodyAddr: Bytes! # address
+  custodyAddr: String! # address
   createdAtBlock: BigInt!
   createdAtTs: BigInt!
 }
@@ -8,7 +8,7 @@ type FID @entity {
 type FName @entity {
   id: ID!
   fname: String!
-  custodyAddr: Bytes! # address
+  custodyAddr: String! # address
   createdAtBlock: BigInt!
   createdAtTs: BigInt!
 
@@ -26,3 +26,29 @@ type Count @entity {
   id: ID!
   count: BigInt
 }
+
+type _Schema_
+  @fulltext(
+    name: "fnameSearch"
+    language: simple
+    algorithm: rank
+    include: [
+      { entity: "FName", fields: [{ name: "fname" }, { name: "custodyAddr" }] }
+    ]
+  )
+  @fulltext(
+    name: "fnameSearchProximity"
+    language: simple
+    algorithm: proximityRank
+    include: [
+      { entity: "FName", fields: [{ name: "fname" }, { name: "custodyAddr" }] }
+    ]
+  )
+  @fulltext(
+    name: "fidSearch"
+    language: simple
+    algorithm: rank
+    include: [
+      { entity: "FID", fields: [{ name: "id" }, { name: "custodyAddr" }] }
+    ]
+  )

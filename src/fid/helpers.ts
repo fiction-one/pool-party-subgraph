@@ -1,4 +1,4 @@
-import { BigInt, Address } from "@graphprotocol/graph-ts";
+import { BigInt } from "@graphprotocol/graph-ts";
 
 import { FID } from "../../generated/schema";
 import { Register as RegisterEvent } from "../../generated/IdRegistry/IdRegistry";
@@ -8,7 +8,7 @@ export function createFID(event: RegisterEvent): FID {
 
   const fid = new FID(tokenId.toString());
 
-  fid.custodyAddr = event.params.to;
+  fid.custodyAddr = event.params.to.toHex();
   fid.createdAtBlock = event.block.number;
   fid.createdAtTs = event.block.timestamp;
 
@@ -20,7 +20,7 @@ export function loadFID(tokenId: BigInt): FID | null {
   return FID.load(fidId);
 }
 
-export function updateFidCustody(fid: FID, to: Address): void {
+export function updateFidCustody(fid: FID, to: string): void {
   fid.custodyAddr = to;
   fid.save();
 }

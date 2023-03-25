@@ -8,9 +8,7 @@
     "create-local": "graph create --node http://localhost:8020/ castify",
     "remove-local": "graph remove --node http://localhost:8020/ castify",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 castify",
-    "test:fname": "graph test fname -d -v 0.5.2",
-    "test:fid": "graph test fid -d -v 0.5.2",
-    "test": "yarn test:fname && yarn test:fid"
+    "test": "graph test [fname,fid] -d -v 0.5.2"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.42.4",
