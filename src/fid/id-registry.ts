@@ -1,6 +1,6 @@
-import { FID } from "./../generated/schema";
-import { Register, Transfer } from "../generated/IdRegistry/IdRegistry";
-import { updateUserFid, deleteUserFid } from "../utils/id-registry";
+import { FID } from "../../generated/schema";
+import { Register, Transfer } from "../../generated/IdRegistry/IdRegistry";
+import { updateUserFid, deleteUserFid } from "./utils";
 
 export function handleRegister(event: Register): void {
   let fid = new FID(event.params.id.toString());
