@@ -4,90 +4,80 @@ import {
   assert,
   clearStore,
   afterEach,
-  beforeAll,
+  beforeEach,
 } from "matchstick-as/assembly/index";
 
 import { createRegisterEvent, createTransferEvent } from "./utils";
 import { handleRegister, handleTransfer } from "../../src/fid/handlers";
-import { Register as RegisterEvent } from "../../generated/IdRegistry/IdRegistry";
+import {
+  Register as RegisterEvent,
+  Transfer as TransferEvent,
+} from "../../generated/IdRegistry/IdRegistry";
 
-const custodyAddr1 = "0x39ff405821ece5c94e976f3d6ac676f125976303";
-const custodyAddr2 = "0x39ff405821ece5c94e976f3d6ac676f125976305";
-const recoveryAddr = "0x39ff405821ece5c94e976f3d6ac676f125976304";
-const fid1 = "1";
-const testUrl = "test";
+const CUSTODY_ADDR_1 = "0x39ff405821ece5c94e976f3d6ac676f125976303";
+const CUSTODY_ADDR_2 = "0x39ff405821ece5c94e976f3d6ac676f125976305";
+const RECOVERY_ADDR_1 = "0x39ff405821ece5c94e976f3d6ac676f125976304";
+const FID_1 = "1";
+const TEST_URL = "test";
+const NULL_FID = "null";
 
-let registerEventGlobal: RegisterEvent;
+const createRegisterEventWithConstants = (
+  custodyAddr: string = CUSTODY_ADDR_1,
+  fid: string = FID_1,
+  recoveryAddr: string = RECOVERY_ADDR_1,
+  url: string = TEST_URL
+): RegisterEvent => {
+  return createRegisterEvent(custodyAddr, fid, recoveryAddr, url);
+};
+
+const createTransferEventWithConstants = (
+  from: string = CUSTODY_ADDR_1,
+  to: string = CUSTODY_ADDR_2,
+  fid: string = FID_1
+): TransferEvent => {
+  return createTransferEvent(from, to, fid);
+};
 
 describe("Farcaster IDs", () => {
   describe("Register Event", () => {
+    beforeEach(() => {
+      const registerEvent = createRegisterEventWithConstants();
+      handleRegister(registerEvent);
+    });
     afterEach(() => {
       clearStore();
     });
     test("should register new fid", () => {
-      const registerEvent = createRegisterEvent(
-        custodyAddr1,
-        fid1,
-        recoveryAddr,
-        testUrl
-      );
-      handleRegister(registerEvent);
-
-      assert.fieldEquals("FID", fid1, "custodyAddr", custodyAddr1);
-      assert.fieldEquals("FID", fid1, "createdAtBlock", "1");
-      assert.fieldEquals("FID", fid1, "createdAtTs", "1");
+      assert.fieldEquals("FID", FID_1, "custodyAddr", CUSTODY_ADDR_1);
+      assert.fieldEquals("FID", FID_1, "createdAtBlock", "1");
+      assert.fieldEquals("FID", FID_1, "createdAtTs", "1");
     });
     test("should update user", () => {
-      const registerEvent = createRegisterEvent(
-        custodyAddr1,
-        fid1,
-        recoveryAddr,
-        testUrl
-      );
-      handleRegister(registerEvent);
-
-      assert.fieldEquals("User", custodyAddr1, "id", custodyAddr1);
-      assert.fieldEquals("User", custodyAddr1, "fid", fid1);
+      assert.fieldEquals("User", CUSTODY_ADDR_1, "id", CUSTODY_ADDR_1);
+      assert.fieldEquals("User", CUSTODY_ADDR_1, "fid", FID_1);
     });
   });
   describe("Transfer Event", () => {
-    beforeAll(() => {
-      registerEventGlobal = createRegisterEvent(
-        custodyAddr1,
-        fid1,
-        recoveryAddr,
-        testUrl
-      );
+    beforeEach(() => {
+      const registerEvent = createRegisterEventWithConstants();
+      handleRegister(registerEvent);
+
+      const transferEvent = createTransferEventWithConstants();
+      handleTransfer(transferEvent);
     });
     afterEach(() => {
       clearStore();
     });
     test("should handle fid transfer", () => {
-      handleRegister(registerEventGlobal);
-      const transferEvent = createTransferEvent(
-        custodyAddr1,
-        custodyAddr2,
-        fid1
-      );
-      handleTransfer(transferEvent);
-
-      assert.fieldEquals("FID", fid1, "custodyAddr", custodyAddr2);
-      assert.fieldEquals("FID", fid1, "createdAtBlock", "1");
-      assert.fieldEquals("FID", fid1, "createdAtTs", "1");
+      assert.fieldEquals("FID", FID_1, "custodyAddr", CUSTODY_ADDR_2);
+      assert.fieldEquals("FID", FID_1, "createdAtBlock", "1");
+      assert.fieldEquals("FID", FID_1, "createdAtTs", "1");
     });
     test("should update user", () => {
-      handleRegister(registerEventGlobal);
-      const transferEvent = createTransferEvent(
-        custodyAddr1,
-        custodyAddr2,
-        fid1
-      );
-      handleTransfer(transferEvent);
-
-      assert.fieldEquals("User", custodyAddr2, "id", custodyAddr2);
-      assert.fieldEquals("User", custodyAddr2, "fid", fid1);
-      assert.fieldEquals("User", custodyAddr1, "id", custodyAddr1);
-      assert.fieldEquals("User", custodyAddr1, "fid", "null");
+      assert.fieldEquals("User", CUSTODY_ADDR_2, "id", CUSTODY_ADDR_2);
+      assert.fieldEquals("User", CUSTODY_ADDR_2, "fid", FID_1);
+      assert.fieldEquals("User", CUSTODY_ADDR_1, "id", CUSTODY_ADDR_1);
+      assert.fieldEquals("User", CUSTODY_ADDR_1, "fid", NULL_FID);
     });
   });
 });
