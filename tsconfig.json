@@ -1,4 +1,9 @@
 {
+  "compilerOptions": {
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  },
   "extends": "@graphprotocol/graph-ts/types/tsconfig.base.json",
   "include": ["src", "tests/fid", "tests/fname"],
   "exclude": ["node_modules", "generated", "build"]
