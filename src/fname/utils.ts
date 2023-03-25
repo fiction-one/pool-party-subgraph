@@ -1,15 +1,31 @@
+import { BigInt, Bytes, Address } from "@graphprotocol/graph-ts";
+
 import { FName } from "../../generated/schema";
 import {
   Transfer,
   NameRegistry,
 } from "../../generated/NameRegistry/NameRegistry";
-import { BigInt, Bytes } from "@graphprotocol/graph-ts";
-import { User } from "../../generated/schema";
 
-export function initializeFname(event: Transfer): FName {
+export function loadOrCreateFname(event: Transfer): FName {
+  let fname = loadFname(event.params.tokenId);
+
+  if (!fname) {
+    fname = createFname(event);
+  }
+
+  return fname;
+}
+
+export function loadFname(tokenId: BigInt): FName | null {
+  const fnameId = tokenId.toString();
+  return FName.load(fnameId);
+}
+
+export function createFname(event: Transfer): FName {
   const tokenId = event.params.tokenId;
 
   const fname = new FName(tokenId.toString());
+
   fname.fname = extractNameFromId(tokenId);
   fname.createdAtBlock = event.block.number;
   fname.createdAtTs = event.block.timestamp;
@@ -18,26 +34,14 @@ export function initializeFname(event: Transfer): FName {
   return fname;
 }
 
-export function updateUserFnameId(to: string, fname: FName): void {
-  let user = User.load(to);
-
-  if (!user) {
-    user = new User(to);
-  }
-
-  user.fname = fname.id;
-  user.save();
+export function updateFnameExpiry(fname: FName, expiryTs: BigInt): void {
+  fname.expiryTs = expiryTs;
+  fname.save();
 }
 
-export function deleteUserFnameId(from: string): void {
-  let user = User.load(from);
-
-  if (!user) {
-    user = new User(from);
-  }
-
-  user.fname = null;
-  user.save();
+export function updateFnameCustody(fname: FName, to: Address): void {
+  fname.custodyAddr = to;
+  fname.save();
 }
 
 export function extractNameFromId(tokenId: BigInt): string {
