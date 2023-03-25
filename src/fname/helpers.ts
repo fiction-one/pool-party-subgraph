@@ -33,19 +33,20 @@ export function createFname(event: Transfer): FName {
   fname.fname = extractNameFromId(tokenId);
   fname.createdAtBlock = event.block.number;
   fname.createdAtTs = event.block.timestamp;
-  fname.expiryTs = getTokenExpiryTs(event);
 
   return fname;
 }
 
+export function updateFnameExpiryAsync(fname: FName, event: Transfer): void {
+  fname.expiryTs = getTokenExpiryTs(event);
+}
+
 export function updateFnameExpiry(fname: FName, expiryTs: BigInt): void {
   fname.expiryTs = expiryTs;
-  fname.save();
 }
 
 export function updateFnameCustody(fname: FName, to: string): void {
   fname.custodyAddr = to;
-  fname.save();
 }
 
 export function extractNameFromId(tokenId: BigInt): string {

@@ -7,6 +7,7 @@ import {
   loadOrCreateFname,
   loadFname,
   updateFnameExpiry,
+  updateFnameExpiryAsync,
 } from "./helpers";
 import { updateUserFnameId, deleteUserFnameId } from "../user/helpers";
 
@@ -16,7 +17,10 @@ export function handleTransfer(event: TransferEvent): void {
 
   let fname = loadOrCreateFname(event);
 
+  updateFnameExpiryAsync(fname, event);
   updateFnameCustody(fname, newCustody);
+  fname.save();
+
   deleteUserFnameId(oldCustody);
   updateUserFnameId(newCustody, fname);
 }
@@ -26,5 +30,6 @@ export function handleRenew(event: RenewEvent): void {
 
   if (fname) {
     updateFnameExpiry(fname, event.params.expiry);
+    fname.save();
   }
 }
