@@ -11,8 +11,6 @@ type FName @entity {
   custodyAddr: String! # address
   createdAtBlock: BigInt!
   createdAtTs: BigInt!
-
-  recoveryAddr: Bytes # address
   expiryTs: BigInt
 }
 
