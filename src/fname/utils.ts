@@ -1,7 +1,10 @@
-import { FName } from "../generated/schema";
-import { Transfer, NameRegistry } from "../generated/NameRegistry/NameRegistry";
+import { FName } from "../../generated/schema";
+import {
+  Transfer,
+  NameRegistry,
+} from "../../generated/NameRegistry/NameRegistry";
 import { BigInt, Bytes } from "@graphprotocol/graph-ts";
-import { User } from "../generated/schema";
+import { User } from "../../generated/schema";
 
 export function initializeFname(event: Transfer): FName {
   const tokenId = event.params.tokenId;

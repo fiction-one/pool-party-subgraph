@@ -31,7 +31,7 @@ dataSources:
           handler: handleRegister
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
-      file: ./src/id-registry.ts
+      file: ./src/fid/id-registry.ts
   - kind: ethereum
     name: NameRegistry
     network: goerli
@@ -53,4 +53,4 @@ dataSources:
       eventHandlers:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
-      file: ./src/name-registry.ts
+      file: ./src/fname/name-registry.ts

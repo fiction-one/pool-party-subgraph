@@ -1,4 +1,4 @@
 {
   "extends": "@graphprotocol/graph-ts/types/tsconfig.base.json",
-  "include": ["src", "utils/name-registry.ts"]
+  "include": ["src", "src/fname/utils.ts"]
 }
