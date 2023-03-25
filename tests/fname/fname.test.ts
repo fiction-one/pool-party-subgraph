@@ -10,7 +10,7 @@ import {
 } from "matchstick-as/assembly/index";
 
 import { createTransferEvent } from "./utils";
-import { handleTransfer } from "../../src/name-registry";
+import { handleTransfer } from "../../src/fname/name-registry";
 import { mockGetTokenExpiryTs } from "./utils";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
