@@ -1,23 +1,19 @@
-import { FID } from "../../generated/schema";
 import { Register, Transfer } from "../../generated/IdRegistry/IdRegistry";
 import { updateUserFid, deleteUserFid } from "../user/utils";
+import { createFID, loadFID, updateFidCustody } from "./utils";
 
 export function handleRegister(event: Register): void {
-  let fid = new FID(event.params.id.toString());
-  fid.custodyAddr = event.params.to;
-  fid.createdAtBlock = event.block.number;
-  fid.createdAtTs = event.block.timestamp;
+  let fid = createFID(event);
   fid.save();
 
   updateUserFid(event.params.to.toHex(), fid);
 }
 
 export function handleTransfer(event: Transfer): void {
-  let fid = FID.load(event.params.id.toString());
+  let fid = loadFID(event.params.id);
 
   if (fid) {
-    fid.custodyAddr = event.params.to;
-    fid.save();
+    updateFidCustody(fid, event.params.to);
     deleteUserFid(event.params.from.toHex());
     updateUserFid(event.params.to.toHex(), fid);
   }
