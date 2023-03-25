@@ -57,4 +57,8 @@ dataSources:
       eventHandlers:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
+        - event: Renew(indexed uint256,uint256)
+          handler: handleRenew
+        - event: ChangePool(indexed address)
+          handler: handleChangePool
       file: ./src/fname/handlers.ts
