@@ -1,4 +1,4 @@
-import { BigInt, Bytes, Address } from "@graphprotocol/graph-ts";
+import { BigInt, Bytes } from "@graphprotocol/graph-ts";
 
 import { FName } from "../../generated/schema";
 import {
@@ -43,7 +43,7 @@ export function updateFnameExpiry(fname: FName, expiryTs: BigInt): void {
   fname.save();
 }
 
-export function updateFnameCustody(fname: FName, to: Address): void {
+export function updateFnameCustody(fname: FName, to: string): void {
   fname.custodyAddr = to;
   fname.save();
 }
