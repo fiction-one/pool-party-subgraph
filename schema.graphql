@@ -21,3 +21,8 @@ type User @entity {
   fid: FID
   fname: FName
 }
+
+type Count @entity {
+  id: ID!
+  count: BigInt
+}

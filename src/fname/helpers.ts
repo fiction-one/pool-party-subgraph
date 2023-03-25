@@ -5,12 +5,16 @@ import {
   Transfer,
   NameRegistry,
 } from "../../generated/NameRegistry/NameRegistry";
+import { incrementCount } from "../global/helpers";
+
+export const FNAME_COUNTER_ID = "fname_count";
 
 export function loadOrCreateFname(event: Transfer): FName {
   let fname = loadFname(event.params.tokenId);
 
   if (!fname) {
     fname = createFname(event);
+    incrementCount(FNAME_COUNTER_ID);
   }
 
   return fname;
