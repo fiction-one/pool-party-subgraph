@@ -33,8 +33,7 @@ type _Schema_
     language: simple
     algorithm: rank
     include: [
-      { entity: "FName", fields: [{ name: "fname" }] }
-      { entity: "FID", fields: [{ name: "custodyAddr" }] }
+      { entity: "FName", fields: [{ name: "fname" }, { name: "custodyAddr" }] }
     ]
   )
   @fulltext(
@@ -42,7 +41,7 @@ type _Schema_
     language: simple
     algorithm: proximityRank
     include: [
-      { entity: "FName", fields: [{ name: "fname" }] }
-      { entity: "FID", fields: [{ name: "custodyAddr" }] }
+      { entity: "FName", fields: [{ name: "fname" }, { name: "custodyAddr" }] }
     ]
   )
+  
