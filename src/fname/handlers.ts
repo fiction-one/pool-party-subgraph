@@ -7,8 +7,8 @@ import {
   loadOrCreateFname,
   loadFname,
   updateFnameExpiry,
-} from "./utils";
-import { updateUserFnameId, deleteUserFnameId } from "../user/utils";
+} from "./helpers";
+import { updateUserFnameId, deleteUserFnameId } from "../user/helpers";
 
 export function handleTransfer(event: TransferEvent): void {
   const newCustody = event.params.to;

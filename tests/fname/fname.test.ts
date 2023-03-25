@@ -11,7 +11,7 @@ import {
 } from "matchstick-as/assembly/index";
 
 import { createRenewEvent, createTransferEvent } from "./utils";
-import { handleRenew, handleTransfer } from "../../src/fname/name-registry";
+import { handleRenew, handleTransfer } from "../../src/fname/handlers";
 import { mockGetTokenExpiryTs } from "./utils";
 import { Transfer } from "../../generated/NameRegistry/NameRegistry";
 

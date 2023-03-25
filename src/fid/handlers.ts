@@ -1,6 +1,6 @@
 import { Register, Transfer } from "../../generated/IdRegistry/IdRegistry";
-import { updateUserFid, deleteUserFid } from "../user/utils";
-import { createFID, loadFID, updateFidCustody } from "./utils";
+import { updateUserFid, deleteUserFid } from "../user/helpers";
+import { createFID, loadFID, updateFidCustody } from "./helpers";
 
 export function handleRegister(event: Register): void {
   let fid = createFID(event);
