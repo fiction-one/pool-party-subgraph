@@ -1,4 +1,8 @@
 specVersion: 0.0.5
+description: Web3 social name indexer
+repository: https://github.com/fiction-one/castify
+features:
+  - fullTextSearch
 schema:
   file: ./schema.graphql
 dataSources:
