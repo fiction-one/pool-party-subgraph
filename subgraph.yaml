@@ -54,24 +54,3 @@ dataSources:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
       file: ./src/name-registry.ts
-  - kind: ethereum
-    name: BundleRegistry
-    network: goerli
-    source:
-      address: "0xdb647193df79ce69b5d34549aae98d519223f682"
-      abi: BundleRegistry
-      startBlock: 7648795
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.7
-      language: wasm/assemblyscript
-      entities:
-        - BundleRegistryChangeTrustedCaller
-        - BundleRegistryOwnershipTransferred
-      abis:
-        - name: BundleRegistry
-          file: ./abis/BundleRegistry.json
-      eventHandlers:
-        - event: BundleRegistryChangeTrustedCaller(indexed address,indexed address)
-          handler: handleBundleRegistryChangeTrustedCaller
-      file: ./src/bundle-registry.ts
