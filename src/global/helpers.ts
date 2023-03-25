@@ -1,4 +1,5 @@
 import { BigInt } from "@graphprotocol/graph-ts";
+
 import { Count } from "../../generated/schema";
 
 export function incrementCount(countId: string): void {
