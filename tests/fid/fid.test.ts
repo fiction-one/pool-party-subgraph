@@ -8,7 +8,7 @@ import {
 } from "matchstick-as/assembly/index";
 
 import { createRegisterEvent, createTransferEvent } from "./utils";
-import { handleRegister, handleTransfer } from "../../src/fid/id-registry";
+import { handleRegister, handleTransfer } from "../../src/fid/handlers";
 import { Register as RegisterEvent } from "../../generated/IdRegistry/IdRegistry";
 
 const custodyAddr1 = "0x39ff405821ece5c94e976f3d6ac676f125976303";

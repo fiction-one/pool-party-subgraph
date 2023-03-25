@@ -53,6 +53,5 @@ export function extractNameFromId(tokenId: BigInt): string {
 function getTokenExpiryTs(event: Transfer): BigInt {
   const nameRegistry = NameRegistry.bind(event.address);
   const tokenId = event.params.tokenId;
-  const expiryTsCallResult = nameRegistry.try_expiryOf(tokenId);
-  return expiryTsCallResult.value;
+  return nameRegistry.expiryOf(tokenId);
 }
