@@ -22,5 +22,4 @@ export function loadFID(tokenId: BigInt): FID | null {
 
 export function updateFidCustody(fid: FID, to: string): void {
   fid.custodyAddr = to;
-  fid.save();
 }

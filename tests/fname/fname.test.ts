@@ -10,15 +10,25 @@ import {
   beforeEach,
 } from "matchstick-as/assembly/index";
 
-import { createRenewEvent, createTransferEvent } from "./utils";
-import { handleRenew, handleTransfer } from "../../src/fname/handlers";
+import {
+  createChangePoolEvent,
+  createRenewEvent,
+  createTransferEvent,
+} from "./utils";
+import {
+  handleChangePool,
+  handleRenew,
+  handleTransfer,
+} from "../../src/fname/handlers";
 import { mockGetTokenExpiryTs } from "./utils";
 import { Transfer as TransferEvent } from "../../generated/NameRegistry/NameRegistry";
-import { FNAME_COUNTER_ID } from "../../src/fname/helpers";
+import { FNAME_COUNTER_ID, POOL_ID } from "../../src/fname/helpers";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 const CUSTODY_ADDRESS_1 = "0x39ff405821ece5c94e976f3d6ac676f125976303";
 const CUSTODY_ADDRESS_2 = "0x39ff405821ece5c94e976f3d6ac676f125976304";
+const POOL_ADDRESS_1 = "0x39ff405821ece5c94e976f3d6ac676f125976305";
+const POOL_ADDRESS_2 = "0x39ff405821ece5c94e976f3d6ac676f125976306";
 const NAME_REGISTRY_ADDR = "0x39ff405821ece5c94e976f3d6ac676f125976303";
 
 const NULL_FNAME = "null";
@@ -149,6 +159,21 @@ describe("NameRegistry", () => {
       handleRenew(renewEvent);
 
       assert.fieldEquals("FName", FNAME_ID, "expiryTs", newExpiryTs.toString());
+    });
+  });
+  describe("Change Pool Event", () => {
+    test("should update pool address", () => {
+      let changePoolEvent = createChangePoolEvent(POOL_ADDRESS_1);
+
+      handleChangePool(changePoolEvent);
+
+      assert.fieldEquals("Pool", POOL_ID, "address", POOL_ADDRESS_1);
+
+      changePoolEvent = createChangePoolEvent(POOL_ADDRESS_2);
+
+      handleChangePool(changePoolEvent);
+
+      assert.fieldEquals("Pool", POOL_ID, "address", POOL_ADDRESS_2);
     });
   });
 });

@@ -11,8 +11,6 @@ type FName @entity {
   custodyAddr: String! # address
   createdAtBlock: BigInt!
   createdAtTs: BigInt!
-
-  recoveryAddr: Bytes # address
   expiryTs: BigInt
 }
 
@@ -25,6 +23,11 @@ type User @entity {
 type Count @entity {
   id: ID!
   count: BigInt
+}
+
+type Pool @entity {
+  id: ID!
+  address: String!
 }
 
 type _Schema_
