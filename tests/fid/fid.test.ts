@@ -8,7 +8,11 @@ import {
 } from "matchstick-as/assembly/index";
 
 import { createRegisterEvent, createTransferEvent } from "./utils";
-import { handleRegister, handleTransfer } from "../../src/fid/handlers";
+import {
+  FID_COUNT_ID,
+  handleRegister,
+  handleTransfer,
+} from "../../src/fid/handlers";
 import {
   Register as RegisterEvent,
   Transfer as TransferEvent,
@@ -55,6 +59,18 @@ describe("Farcaster IDs", () => {
     test("should update user", () => {
       assert.fieldEquals("User", CUSTODY_ADDR_1, "id", CUSTODY_ADDR_1);
       assert.fieldEquals("User", CUSTODY_ADDR_1, "fid", FID_1);
+    });
+    test("should increment fid counter", () => {
+      assert.fieldEquals("Count", FID_COUNT_ID, "count", "1");
+
+      const registerEvent = createRegisterEventWithConstants(
+        CUSTODY_ADDR_2,
+        "2"
+      );
+
+      handleRegister(registerEvent);
+
+      assert.fieldEquals("Count", FID_COUNT_ID, "count", "2");
     });
   });
   describe("Transfer Event", () => {
