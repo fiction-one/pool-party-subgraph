@@ -4,7 +4,7 @@ Pool Party is a Web3 Social name aggregator.
 
 - Built ⚙️ with [The Graph](https://thegraph.com/en/) and [Matchstick](https://github.com/LimeChain/matchstick)
 - Link to the [subgraph](https://thegraph.com/hosted-service/subgraph/nicky-ru/castify)
-- Link to the [dApp](https://dapp-delta-eight.vercel.app) 🔥
+- Link to the [dApp](https://www.pool-party.xyz ) 🔥
 - dApp repo -> [link](https://github.com/fiction-one/pool-party)
 
 ## Intro
