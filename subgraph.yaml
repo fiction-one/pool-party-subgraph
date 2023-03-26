@@ -18,14 +18,7 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - CancelRecovery
-        - ChangeHome
-        - ChangeRecoveryAddress
-        - ChangeTrustedCaller
-        - DisableTrustedOnly
-        - OwnershipTransferred
         - Register
-        - RequestRecovery
         - Transfer
       abis:
         - name: IdRegistry
@@ -48,9 +41,9 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - AdminChanged
-        - BeaconUpgraded
-        - Upgraded
+        - Transfer
+        - Renew
+        - ChangePool
       abis:
         - name: NameRegistry
           file: ./abis/NameRegistry.json
